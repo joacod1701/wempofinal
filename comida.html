@@ -1,0 +1,38 @@
+<!-- Ejemplo de index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choclitos - Subir Imagen</title>
+</head>
+<body>
+    <h1>Sube tu imagen de maíz</h1>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file">
+        <button type="submit">Analizar</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('fileInput');
+            formData.append('file', fileInput.files[0]);
+
+            fetch('https://e2bd-200-215-229-245.ngrok-free.app/predict', { // Reemplaza con tu URL de ngrok
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Resultado: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error al procesar la imagen.';
+            });
+        });
+    </script>
+</body>
+</html>
+
